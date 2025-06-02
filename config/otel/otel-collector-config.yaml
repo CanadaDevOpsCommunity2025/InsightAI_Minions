@@ -1,16 +1,22 @@
 receivers:
-  otlp:
-    protocols:
-      http:
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: llm-metrics
+          scrape_interval: 5s
+          static_configs:
+            - targets: ['172.20.10.6:8000']
+
 
 exporters:
   prometheus:
     endpoint: "0.0.0.0:8888"
-  otlphttp/victoria:
-    endpoint: http://victoriametrics:8428
+  prometheusremotewrite:
+    endpoint: "http://victoriametrics:8428/api/v1/write"
 
 service:
   pipelines:
-    traces:
-      receivers: [otlp]
-      exporters: [otlphttp/victoria]
+    metrics:
+      receivers: [prometheus]
+      exporters: [prometheusremotewrite]
+        
