@@ -28,4 +28,4 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=minions123
     volumes:
-      - ../config/grafana:/var/lib/grafana
+      - ~/volumes/grafana:/var/lib/grafana
