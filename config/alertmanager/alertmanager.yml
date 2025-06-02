@@ -17,7 +17,7 @@ route:
 receivers:
   - name: slack-notifications-default
     slack_configs: 
-      - api_url: ''
+      - api_url: 'https://hooks.slack.com/services/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'
         channel: '#project-insightai_minions'
         text: |-
           *{{ .CommonAnnotations.summary }}*
@@ -26,7 +26,7 @@ receivers:
 
   - name: slack-notifications-critical
     slack_configs:
-      - api_url: ''
+      - api_url: 'https://hooks.slack.com/services/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'
         channel: '#insightai-critical-alerts'
         text: |-
           *{{ .CommonAnnotations.summary }}*
