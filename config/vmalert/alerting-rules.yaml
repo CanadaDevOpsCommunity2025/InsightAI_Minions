@@ -1,0 +1,21 @@
+# alerting-rules.yaml
+groups:
+  - name: insightAlerts
+    rules:
+      - alert: HighPromptTokenRate
+        expr: rate(vllm_prompt_tokens_total{model_name="gpt2"}[30s]) > 20
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "High token rate detected for gpt2"
+          description: "The prompt token rate for gpt2 exceeded 20 tokens/sec over the last 30 seconds."
+
+      - alert: VeryHighPromptTokenRate
+        expr: rate(vllm_prompt_tokens_total{model_name="gpt2"}[30s]) > 100
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "CRITICAL: Very high token rate for gpt2"
+          description: "The prompt token rate for gpt2 exceeded 100 tokens/sec over the last 30 seconds."

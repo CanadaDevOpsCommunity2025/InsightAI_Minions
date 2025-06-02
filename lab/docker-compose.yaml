@@ -1,0 +1,54 @@
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: otel-collector
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ../config/otel/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+      - "8888:8888"
+
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:v1.117.1
+    container_name: victoriametrics
+    ports:
+      - "8428:8428"
+  alert:
+    image: victoriametrics/vmalert:v1.117.1
+    container_name: vmalert
+    command:
+      - -datasource.url=http://victoriametrics:8428
+      - -remoteRead.url=http://victoriametrics:8428
+      - -remoteWrite.url=http://victoriametrics:8428
+      - -rule=/etc/vmalert/*.yaml
+      - -notifier.url=http://alertmanager:9093
+    volumes:
+      - ../config/vmalert:/etc/vmalert
+    depends_on:
+      - victoriametrics
+      - alertmanager
+    ports:
+      - "8880:8880"
+  alertmanager:
+    image: prom/alertmanager
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ../config/alertmanager:/etc/alertmanager
+
+  grafana:
+    image: grafana/grafana:latest
+    user: "472:472"
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - victoriametrics
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=minions123
+    volumes:
+      - ~/volumes/grafana:/var/lib/grafana
