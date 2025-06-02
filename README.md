@@ -1,6 +1,6 @@
 # InsightAI_Minions
 
-Project Name: **InsightAI**
+![Alt Text](logo/logo_dark.svg)
 
 Get insight into key KPIs for any LLM that you want to deploy.
 
@@ -47,3 +47,7 @@ To deploy:
 ```
 docker compose -f docker-compose.yaml up -d --build
 ```
+
+## Architecture
+
+![Alt Text](architecture.jpeg)
