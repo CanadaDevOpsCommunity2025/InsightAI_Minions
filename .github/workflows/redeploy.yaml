@@ -26,7 +26,6 @@ jobs:
             echo "USER: ${{ secrets.SERVER_USER }}"
             echo "SSH key length: $(echo "${{ secrets.SERVER_SSH_KEY }}" | wc -c)"
             echo "Pulling latest code..."
-            cd ~/TestDeploy  # Replace this with the actual path on your EC2
             git pull origin master
             echo "Stopping existing containers..."
             docker-compose down
