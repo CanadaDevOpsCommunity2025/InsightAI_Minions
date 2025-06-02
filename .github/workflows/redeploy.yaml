@@ -26,7 +26,9 @@ jobs:
             echo "USER: ${{ secrets.SERVER_USER }}"
             echo "SSH key length: $(echo "${{ secrets.SERVER_SSH_KEY }}" | wc -c)"
             echo "Pulling latest code..."
-            git pull origin master
+            cd InsightAI_Minions
+            git pull
+            cd lab
             echo "Stopping existing containers..."
             docker-compose down
             echo "Starting containers with GPU support..."
